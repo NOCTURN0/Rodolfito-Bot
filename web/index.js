@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require("path");
+const BotClient = require('../bot/client');
+const passport = require('./passport');
+const auth = require('./auth');
 const exphbs = require("express-handlebars");
 const session = require('express-session');
 
@@ -26,6 +29,18 @@ app.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 60000 }
 }));
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use((req, res, next) => {
+  req.BotClient = BotClient;
+  next();
+});
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the dashboard!')
+})
 
 app.listen(app.get('port'), () => {
     console.log('Servidor en puerto ' + app.get('port'))
