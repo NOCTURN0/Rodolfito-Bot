@@ -42,6 +42,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to the dashboard!')
 })
 
+app.use('/login', require('./routes/login'));
+
 app.listen(app.get('port'), () => {
     console.log('Servidor en puerto ' + app.get('port'))
 });
