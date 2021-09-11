@@ -2,4 +2,4 @@
 
 > Este es un bot de discord diseñado para la diversión del usuario y la moderación en los servidores y comunidades. 
 
-[GitHub](https://github.com/NOCTURN0/Rodolfito-Bot "Repositorio del bot")
+[GitHub](https://github.com/NOCTURN0/Rodolfito-Bot "GitHub del Bot")
