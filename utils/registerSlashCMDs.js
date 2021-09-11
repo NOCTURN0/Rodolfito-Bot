@@ -1,6 +1,6 @@
 module.exports = async (client, guild) => {
     client.commands.forEach(async command => {
-        if(!command || command.execute) return;
+        if(!command || !command.execute) return;
         let dataStuff = {
             name: command.name,
             description: command.description || 'Sin Descripción',
