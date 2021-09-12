@@ -18,19 +18,19 @@ module.exports = async (client, interaction) => {
         const timestamps = cooldowns.get(command.name);
         const cooldownAmount = (command.cooldown) * 1000;
 
-        if (timestamps.has(interaction.author.id)) {
-            const expirationTime = timestamps.get(interaction.author.id) + cooldownAmount;
+        if (timestamps.has(interaction.user.id)) {
+            const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
                 interaction.reply('Debes esperar ' + timeLeft.toFixed(0) + 'segundos para volver a usar el comando ' + command.name)
             }
         }
 
-        timestamps.set(interaction.author.id, now);
-        setTimeout(() => timestamps.delete(interaction.author.id), cooldownAmount);
+        timestamps.set(interaction.user.id, now);
+        setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
         try {
-            internalCooldown.add(interaction.user.id);
+            internalCooldown.add(interaction.member.id);
             await command.execute(client, interaction);
         } catch (err) {
           console.log(err)
