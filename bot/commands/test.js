@@ -5,6 +5,6 @@ module.exports = {
     description: 'Test command',
     cooldown: 10,
     async execute(client, interaction) {
-        interaction.reply('Test command')
+        await interaction.reply('Test command')
     }
 }
