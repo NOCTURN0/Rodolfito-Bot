@@ -10,7 +10,7 @@ module.exports = async (client, interaction) => {
         const command = client.commands.get(interaction.commandName)
         if (!command) return interaction.reply({ content: "That command doesn't exist", ephemeral: true });
         if (!interaction.guild && command.guildOnly) return interaction.reply("This command only works on servers");
-        if(cooldowns.has(command.name)){
+        if(!cooldowns.has(command.name)){
             cooldowns.set(command.name, new Discord.Collection())
         }
 
