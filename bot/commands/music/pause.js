@@ -10,7 +10,7 @@ module.exports = {
             return await interaction.reply('No estas en un canal de voz')
         }
 
-        if(!player.playing) {
+        if(!player) {
             return await interaction.reply('No se está reproduciendo musica')
         }
 
