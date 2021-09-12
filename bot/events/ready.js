@@ -4,4 +4,6 @@ module.exports = async (client) => {
 
     require("../../utils/registerSlashCMDs")(client, testingserver)
 
+    client.manager.init(client.user.id);
+
 }

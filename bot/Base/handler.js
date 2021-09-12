@@ -43,7 +43,7 @@ for (const file of commandFiles) {
     if (Array.isArray(file)) {
         command = require(`${commandsDir}/${file[0]}/${file[1]}`);
         commandName = file[1].split('.')[0]
-        table.addRow(commandName, "✔")
+        commandTable.addRow(commandName, "✔")
       
     }
     else {
