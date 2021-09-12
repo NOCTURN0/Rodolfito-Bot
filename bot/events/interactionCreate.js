@@ -5,11 +5,11 @@ const cooldowns = new Discord.Collection();
 module.exports = async (client, interaction) => {
     if(interaction.isCommand()) {
         if (internalCooldown.has(interaction.user.id)){
-            return interaction.reply({ content: 'Hey, espera a que acabe de ejecutarse este comando!', ephemeral: true });
+            return await interaction.reply({ content: 'Hey, espera a que acabe de ejecutarse este comando!', ephemeral: true });
         }
         const command = client.commands.get(interaction.commandName)
-        if (!command) return interaction.reply({ content: "That command doesn't exist", ephemeral: true });
-        if (!interaction.guild && command.guildOnly) return interaction.reply("This command only works on servers");
+        if (!command) return await interaction.reply({ content: "That command doesn't exist", ephemeral: true });
+        if (!interaction.guild && command.guildOnly) return await interaction.reply("This command only works on servers");
         if(!cooldowns.has(command.name)){
             cooldowns.set(command.name, new Discord.Collection())
         }
@@ -22,7 +22,7 @@ module.exports = async (client, interaction) => {
             const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                interaction.reply('Debes esperar ' + timeLeft.toFixed(0) + 'segundos para volver a usar el comando ' + command.name)
+                return await interaction.reply('Debes esperar ' + timeLeft.toFixed(0) + 'segundos para volver a usar el comando ' + command.name)
             }
         }
 
@@ -30,11 +30,11 @@ module.exports = async (client, interaction) => {
         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
 
         try {
-            internalCooldown.add(interaction.member.id);
+            internalCooldown.add(interaction.user.id);
             await command.execute(client, interaction);
         } catch (err) {
           console.log(err)
-            if (err.name === "StructureError") return interaction.reply(err.message).catch(() => { });
+            if (err.name === "StructureError") return await interaction.reply(err.message).catch(() => { });
             console.error(err);
             await interaction.reply("Something happened! Here's a debug: " + err).catch(() => { });
         } finally {
