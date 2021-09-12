@@ -1,16 +1,36 @@
 const Discord = require('discord.js');
-const cooldown = new Set();
+const internalCooldown = new Set();
+const cooldowns = new Discord.Collection();
 
 module.exports = async (client, interaction) => {
-    if(interaction.isCommand()){
-        if (cooldown.has(interaction.user.id)){
+    if(interaction.isCommand()) {
+        if (internalCooldown.has(interaction.user.id)){
             return interaction.reply({ content: 'Hey, espera a que acabe de ejecutarse este comando!', ephemeral: true });
         }
         const command = client.commands.get(interaction.commandName)
         if (!command) return interaction.reply({ content: "That command doesn't exist", ephemeral: true });
         if (!interaction.guild && command.guildOnly) return interaction.reply("This command only works on servers");
+        if(cooldowns.has(command.name)){
+            cooldowns.set(command.name, new Discord.Collection())
+        }
+
+        const now = Date.now();
+        const timestamps = cooldowns.get(command.name);
+        const cooldownAmount = (command.cooldown) * 1000;
+
+        if (timestamps.has(interaction.author.id)) {
+            const expirationTime = timestamps.get(interaction.author.id) + cooldownAmount;
+            if (now < expirationTime) {
+                const timeLeft = (expirationTime - now) / 1000;
+                interaction.reply('Debes esperar ' + timeLeft.toFixed(0) + 'segundos para volver a usar el comando ' + command.name)
+            }
+        }
+
+        timestamps.set(interaction.author.id, now);
+        setTimeout(() => timestamps.delete(interaction.author.id), cooldownAmount);
+
         try {
-            cooldown.add(interaction.user.id);
+            internalCooldown.add(interaction.user.id);
             await command.execute(client, interaction);
         } catch (err) {
           console.log(err)
@@ -18,7 +38,7 @@ module.exports = async (client, interaction) => {
             console.error(err);
             await interaction.reply("Something happened! Here's a debug: " + err).catch(() => { });
         } finally {
-            cooldown.delete(interaction.user.id);
+            internalCooldown.delete(interaction.user.id);
         }
     }
 }
