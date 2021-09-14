@@ -2,3 +2,4 @@ dashboard.sqlite
 .env
 package-lock.json
 node_modules
+bash.sh

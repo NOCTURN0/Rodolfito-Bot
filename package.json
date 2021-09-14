@@ -1,11 +1,8 @@
 {
   "name": "bot-dashboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "Bot de Discord Rodolfito",
   "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/index.js"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -23,6 +20,18 @@
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
+    "node": "^16.9.1",
     "nodemon": "^2.0.12"
-  }
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NOCTURN0/Rodolfito-Bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NOCTURN0/Rodolfito-Bot/issues"
+  },
+  "homepage": "https://github.com/NOCTURN0/Rodolfito-Bot#readme"
 }
